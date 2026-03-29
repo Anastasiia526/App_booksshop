@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${author.fullName}">Book list</title>
+</head>
+<body>
+<h2 th:text="'Books by ' + ${author.fullName}"></h2>
+<ul>
+    <li th:each="book : ${books}">
+        <a th:href="@{/booksshop/{id}(id=${book.id})}">
+            <img th:src="@{/images/{filename}(filename=${book.image})}" width="200" alt="Book image"/>
+            <p th:text="${book.title}"></p>
+        </a>
+        <br/>
+        <hr/>
+    </li>
+</ul>
+<button onclick="history.back()">Return back</button>
+</body>
+</html>

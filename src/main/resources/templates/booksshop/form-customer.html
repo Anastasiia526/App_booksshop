@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Customer form</title>
+</head>
+<body>
+<form th:method="POST" th:action="@{/orders/customer}" th:object="${order}">
+
+    <h1>Place your order</h1>
+
+    <div th:each="book : ${order.books}">
+        <p th:text="${book.title}"></p>
+    </div>
+
+    <h3>Customer information</h3>
+
+    <input type="text" th:field="*{customer.firstName}" placeholder="First Name"/>
+    <div th:if="${#fields.hasErrors('customer.firstName')}"
+         th:errors="*{customer.firstName}"></div>
+
+    <input type="text" th:field="*{customer.lastName}" placeholder="Last Name"/>
+    <div th:if="${#fields.hasErrors('customer.lastName')}"
+         th:errors="*{customer.lastName}"></div>
+
+    <input type="text" th:field="*{customer.email}" placeholder="Email"/>
+    <div th:if="${#fields.hasErrors('customer.email')}"
+         th:errors="*{customer.email}"></div>
+
+    <input type="text" th:field="*{customer.phoneNumber}" placeholder="Number of phone"/>
+    <div th:if="${#fields.hasErrors('customer.phoneNumber')}"
+         th:errors="*{customer.phoneNumber}"></div>
+
+    <button type="submit">Next</button>
+
+</form>
+</body>
+</html>

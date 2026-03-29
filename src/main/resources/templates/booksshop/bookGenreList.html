@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>List Book Genres</title>
+</head>
+<body>
+<h2>Choose the genre of book</h2>
+<div th:each="genre : ${bookGenre}">
+    <a th:href="@{/booksshop/genre/{id}/book(id=${genre.id})}"
+       th:text="${genre.name}"></a>
+    <hr/>
+    <br/>
+</div>
+<br/>
+<hr/>
+<button onclick="history.back()">Return back</button>
+<br/>
+<hr/>
+<br/>
+<a th:href="@{/booksshop}">Back to Main Page</a>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${brand}">Book list</title>
+</head>
+<body>
+<h2 th:text="'Books by brand: ' + ${brand}"></h2>
+
+<div th:each="book : ${books}">
+    <a th:href="@{/booksshop/{id}(id=${book.id})}">
+        <img th:src="@{/images/{filename}(filename=${book.image})}" width="200" alt="Book image"/>
+        <p th:text="${book.title}"></p>
+    </a>
+    <hr/>
+</div>
+</body>
+</html>

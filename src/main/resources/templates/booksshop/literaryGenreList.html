@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Literary Genre List</title>
+<!--    <link rel="stylesheet" href="css/style.css">-->
+</head>
+<body>
+
+<a th:href="@{/booksshop/book/new}" class="btn"
+   sec:authorize="hasRole('ADMIN')" style="color:green;"
+   >Create new Book</a>
+
+<h2>Choose the Literary Genre</h2>
+<div th:each="literaryGenre : ${literaryGenres}">
+    <a th:href="@{/booksshop/literaryGenres/{id}(id=${literaryGenre.getId()})}"
+       th:text="${literaryGenre.getName()}">Literary Genre</a>
+    <hr/>
+    <br/>
+</div>
+<br/>
+<button onclick="history.back()">Return back</button>
+<hr/>
+<br/>
+<div class="button-container">
+    <a th:href="@{/booksshop}" class="btn">Back to Main Page</a>
+</div>
+</body>
+</html>

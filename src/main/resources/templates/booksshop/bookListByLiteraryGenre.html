@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Books by Literary genre</title>
+</head>
+<body>
+<h2>Literary Genres</h2>
+<ul>
+    <li th:each="book : ${books}">
+        <a th:href="@{/booksshop/{id}(id=${book.id})}">
+            <img th:src="@{/images/{filename}(filename=${book.image})}" width="200" alt="Book image"/>
+            <p th:text="${book.title}"></p>
+        </a>
+        <br/>
+        <hr/>
+    </li>
+</ul>
+<button onclick="history.back()">Return back</button>
+<br/>
+<hr/>
+<div class="button-container">
+    <a th:href="@{/booksshop}" class="btn">Back to Main Page</a>
+</div>
+</body>
+</html>

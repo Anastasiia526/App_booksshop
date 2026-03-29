@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${book.title}">Book Details</title>
+</head>
+<body>
+<h2 th:text="${book.title}">Book Title</h2>
+<img th:src="@{/images/{filename}(filename=${book.image})}" width="200" alt="Book image"/>
+<p>Product Code: <span th:text="${book.productCode}"></span></p>
+<p>ISBN: <span th:text="${book.isbn}"></span></p>
+<p> Brand:
+    <a th:href="@{/booksshop/brand/{brand}(brand=${book.brand})}"
+       th:text="${book.brand}">
+    </a>
+</p>
+<!--<p>Brand: <span th:text="${book.brand}"></span></p>-->
+<p>Author:</p>
+<ul>
+    <li th:each="author : ${book.authors}">
+        <a th:href="@{/booksshop/author/{id}(id=${author.id})}"
+           th:text="${author.fullName}">
+        </a>
+    </li>
+</ul>
+<p>Genres:</p>
+<ul>
+    <li th:each="genre : ${book.bookGenre}">
+        <a th:href="@{/booksshop/genre/{id}(id=${genre.id})}"
+           th:text="${genre.name}">
+        </a>
+    </li>
+</ul>
+<p>Literary Genre:</p>
+<ul>
+    <li th:each="bookGenre : ${book.literaryGenre}">
+        <a th:href="@{/booksshop/literaryGenre/{id}(id=${bookGenre.id})}"
+           th:text="${bookGenre.name}">
+        </a>
+    </li>
+</ul>
+<p>Year: <span th:text="${book.yearOfPublication}"></span></p>
+<p>Language: <span th:text="${book.language}"></span></p>
+<p>Price: <span th:text="${book.price} + ' UAH'"></span></p>
+<p>Available:
+    <!-- для юзера: тільки інформація -->
+    <span th:if="${!book.available}"  style="color:red;">
+        Out of stock
+    </span>
+    <span th:if="${book.available}"  style="color:green;">
+        In stock
+    </span>
+
+    <!-- для адміна: посилання доступне -->
+    <a th:if="${!book.available}" th:href="@{/booksshop/unavailable(id=${book.id})}" sec:authorize="hasRole('ADMIN')" style="color:red;">
+        Out of stock (edit)
+    </a>
+    <a th:if="${book.available}" th:href="@{/booksshop/available(id=${book.id})}" sec:authorize="hasRole('ADMIN')" style="color:green;">
+        In stock (edit)
+    </a>
+</p>
+<p>Description: <span th:text="${book.description}"></span></p>
+<br/>
+<form th:action="@{/orders/add-book}" method="post" th:if="${book.available}">
+    <input type="hidden" th:name="bookId" th:value="${book.id}" />
+    <button type="submit">Place an order</button>
+</form>
+<br/>
+<button onclick="history.back()">Return back</button>
+
+<form th:action="@{/booksshop/{id}(id=${book.id})}" sec:authorize="hasRole('ADMIN')" method="post">
+    <input type="hidden" name="method" value="delete"/>
+    <input type="submit" value="Delete"/>
+</form>
+</body>
+</html>

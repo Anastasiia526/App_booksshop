@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pay form</title>
+</head>
+<body>
+<form th:method="POST" th:action="@{/orders/pay}" th:object="${order.pay}">
+    <h1>Place your order</h1>
+    <div th:each="book : ${order.books}">
+        <p th:text="${book.title}"></p>
+    </div>
+    <h3>Pay information</h3>
+    <label>
+        <input type="text" th:field="*{cardNumber}" placeholder="Card Number"/>
+    </label>
+    <div th:if="${#fields.hasErrors('cardNumber')}" th:errors="*{cardNumber}"></div>
+
+    <label>
+        <input type="text" th:field="*{expirationDate}" placeholder="Expiration Date"/>
+    </label>
+    <div th:if="${#fields.hasErrors('expirationDate')}" th:errors="*{expirationDate}"></div>
+
+    <label>
+        <input type="text" th:field="*{cvv}" placeholder="Cvv"/>
+    </label>
+    <div th:if="${#fields.hasErrors('cvv')}" th:errors="*{cvv}"></div>
+
+    <button type="submit">Next</button>
+</form>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delivery</title>
+</head>
+<body>
+<form th:method="POST" th:action="@{/orders/delivery}" th:object="${order}">
+
+    <h1>Place your order</h1>
+
+    <div th:each="book : ${order.books}">
+        <p th:text="${book.title}"></p>
+    </div>
+
+    <h3>Delivery information</h3>
+
+    <input type="text" th:field="*{delivery.city}" placeholder="City"/>
+    <div th:if="${#fields.hasErrors('delivery.city')}"
+         th:errors="*{delivery.city}"></div>
+
+    <input type="text" th:field="*{delivery.region}" placeholder="Region"/>
+    <div th:if="${#fields.hasErrors('delivery.region')}"
+         th:errors="*{delivery.region}"></div>
+
+    <select th:field="*{delivery.method}">
+        <option th:each="d : ${T(your.package.DeliveryMethod).values()}"
+                th:value="${d}"
+                th:text="${d}">
+        </option>
+    </select>
+    <div th:if="${#fields.hasErrors('delivery.method')}"
+         th:errors="*{delivery.method}"></div>
+
+    <input type="text" th:field="*{delivery.address}" placeholder="Address"/>
+    <div th:if="${#fields.hasErrors('delivery.address')}"
+         th:errors="*{delivery.address}"></div>
+
+    <button type="submit">Next</button>
+
+</form>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit</title>
+</head>
+<body>
+<form th:action="@{/booksshop/{id}/edit(id=${book.id})}" method="post" th:object="${book}">
+    <label for="title">Enter title: </label>
+    <br/>
+    <input type="text" th:field="*{title}" id="title"/>
+    <div style="color:red" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title Error</div>
+    <br/>
+    <label for="productCode">Enter product code: </label>
+    <input type="text" th:field="*{productCode}" id="productCode"/>
+    <div style="color:red" th:if="${#fields.hasErrors('productCode')}" th:errors="*{productCode}">Product code Error
+    </div>
+    <br/>
+    <label for="isbn">Enter isbn: </label>
+    <input type="text" th:field="*{isbn}" id="isbn"/>
+    <div style="color:red" th:if="${#fields.hasErrors('isbn')}" th:errors="*{isbn}">isbn Error</div>
+    <br/>
+    <label for="brand">Enter brand: </label>
+    <input type="text" th:field="*{brand}" id="brand"/>
+    <div style="color:red" th:if="${#fields.hasErrors('brand')}" th:errors="*{brand}">Brand Error
+    </div>
+    <br/>
+    <label>Authors:</label>
+    <select th:field="*{authors}">
+        <option th:each="author : ${allAuthors}"
+                th:value="${author.id}"
+                th:text="${author.fullName}">
+        </option>
+    </select>
+    <br/>
+    <label>Book genre:</label>
+    <select th:field="*{bookGenre}">
+        <option th:each="genre : ${allBookGenres}"
+                th:value="${genre.id}"
+                th:text="${genre.name}">
+        </option>
+    </select>
+    <br/>
+    <label>Literary genre:</label>
+    <select th:field="*{literaryGenre}">
+        <option th:each="genre : ${allLiteraryGenres}"
+                th:value="${genre.id}"
+                th:text="${genre.name}">
+        </option>
+    </select>
+    <br/>
+    <label for="yearOfPublication">Enter Year of publication: </label>
+    <input type="text" th:field="*{yearOfPublication}" id="yearOfPublication"/>
+    <div style="color:red" th:if="${#fields.hasErrors('yearOfPublication')}" th:errors="*{yearOfPublication}">Year of
+        publication Error
+    </div>
+    <br/>
+    <label for="language">Enter language: </label>
+    <input type="text" th:field="*{language}" id="language"/>
+    <div style="color:red" th:if="${#fields.hasErrors('language')}" th:errors="*{language}">Language Error</div>
+    <br/>
+    <label for="price">Enter book price: </label>
+    <input type="text" th:field="*{price}" id="price"/>
+    <div style="color:red" th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Book price Error</div>
+    <br/>
+    <label>Enter book available: </label>
+    <label>
+        <input type="checkbox" th:field="*{available}"/>
+    </label>
+    <div style="color:red" th:if="${#fields.hasErrors('available')}" th:errors="*{available}">Book available Error</div>
+    <br/>
+    <label for="description">Enter book description: </label>
+    <input type="text" th:field="*{description}" id="description"/>
+    <div style="color:red" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Book description Error</div>
+    <br/>
+    <input type="hidden" th:field="*{id}"/>
+    <input type="submit" value="Update!"/>
+</form>
+<br/>
+<a th:href="@{/booksshop}">Back to Main Page</a>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Available</title>
+</head>
+<body>
+<h2>Available Books</h2>
+<div th:each="book : ${books}">
+    <a th:href="@{/booksshop/{id}/edit(id=${book.id})}"
+       sec:authorize="hasRole('ADMIN')"
+       th:text="${book.title}">
+    </a>
+
+    <button type="button" style="color: #976648">Edit</button>
+    <br/>
+    <hr/>
+</div>
+<br/>
+<button onclick="history.back()">Return back</button>
+</body>
+</html>
