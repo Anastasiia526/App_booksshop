@@ -1,35 +1,77 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>complete order</title>
+    <title>Order Complete</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-<h1>Thank you! Your order has been completed.</h1>
 
-<h2>Order ID: <span th:text="${order.id}"></span></h2>
+<body class="bg-light">
 
-<h3>Books in your order:</h3>
-    <div th:each="book : ${order.books}">
-        <p th:text="${book.title}"></p>
+<div class="container mt-5">
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+
+            <div class="card shadow p-4">
+                <div class="text-center mb-4">
+                    <h2 class="text-success">✅ Thank you! Your order has been completed.</h2>
+                    <p class="text-muted">
+                        Order ID:
+                        <strong th:text="${order.id}"></strong>
+                    </p>
+                </div>
+                <h5 class="mb-3">📚 Books in your order</h5>
+                <ul class="list-group mb-4">
+                    <li class="list-group-item"
+                        th:each="book : ${order.books}"
+                        th:text="${book.title}">
+                    </li>
+                </ul>
+                <h5 class="mb-3">👤 Customer Information</h5>
+                <div class="mb-4">
+                    <p><strong>First Name:</strong> <span th:text="${order.customer.firstName}"></span></p>
+                    <p><strong>Last Name:</strong> <span th:text="${order.customer.lastName}"></span></p>
+                    <p><strong>Email:</strong> <span th:text="${order.customer.email}"></span></p>
+                    <p><strong>Phone:</strong> <span th:text="${order.customer.phoneNumber}"></span></p>
+                </div>
+                <h5 class="mb-3">🚚 Delivery Information</h5>
+                <div class="mb-4">
+                    <p><strong>City:</strong> <span th:text="${order.delivery.city}"></span></p>
+                    <p><strong>Region:</strong> <span th:text="${order.delivery.region}"></span></p>
+                    <p><strong>Method:</strong> <span th:text="${order.delivery.method}"></span></p>
+                    <p><strong>Address:</strong> <span th:text="${order.delivery.address}"></span></p>
+                </div>
+                <h5 class="mb-3">💳 Payment Information</h5>
+                <div class="mb-4">
+                    <p>
+                        <strong>Card:</strong>
+                        **** **** ****
+                        <span th:text="${#strings.substring(order.pay.cardNumber, order.pay.cardNumber.length() - 4)}"></span>
+                    </p>
+                </div>
+                <div class="text-center mt-4">
+                    <p>
+                        Thank you,
+                        <strong th:text="${order.customer.firstName}"></strong>!
+                    </p>
+                    <p class="text-muted">
+                        We will contact you soon with the delivery details.
+                    </p>
+
+                    <a th:href="@{/booksshop}" class="btn btn-primary mt-3">
+                        🏠 Back to Main Page
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
     </div>
 
-<h3>Customer Information:</h3>
-<p>First Name: <span th:text="${order.customer.firstName}"></span></p>
-<p>Last Name: <span th:text="${order.customer.lastName}"></span></p>
-<p>Email: <span th:text="${order.customer.email}"></span></p>
-<p>Phone: <span th:text="${order.customer.phoneNumber}"></span></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<h3>Delivery Information:</h3>
-<p>City: <span th:text="${order.delivery.city}"></span></p>
-<p>Region: <span th:text="${order.delivery.region}"></span></p>
-<p>Method: <span th:text="${order.delivery.delivery}"></span></p>
-<p>Address: <span th:text="${order.delivery.address}"></span></p>
-
-<h3>Payment Information:</h3>
-<span th:text="${order.pay.cardNumber}"></span>
-
-<p>Thank you, <span th:text="${order.customer.firstName}"></span>!</p>
-<p>We will contact you soon with the delivery details.</p>
 </body>
 </html>

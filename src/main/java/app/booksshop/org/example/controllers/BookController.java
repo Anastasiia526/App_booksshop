@@ -126,7 +126,7 @@ public class BookController {
         book.setImage(fileName);
 
         bookService.createBook(book);
-        return "redirect:/booksshop";
+        return "booksshop/success";
     }
 
     @PreAuthorize("hasAnyRole('ADMIN')")
