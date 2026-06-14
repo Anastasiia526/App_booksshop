@@ -38,7 +38,6 @@ public class BookController {
         this.fileService = fileService;
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping("/genre/{id}/book")
     public String showBooksByGenre(@PathVariable Long id, Model model) {
         BookGenreDto genre = bookGenreService.findById(id);
@@ -48,14 +47,12 @@ public class BookController {
         return "booksshop/bookListByBookGenres";
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping("/{id}")
     public String showBookDetails(@PathVariable Long id, Model model) {
         model.addAttribute("book", bookService.findByBookId(id));
         return "booksshop/bookDetails";
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping("/literaryGenre/{id}")
     public String showBooksByLiteraryGenre(@PathVariable("id") Long id, Model model) {
         LiteraryGenreDto literaryGenre = literaryGenreService.findById(id);
@@ -65,7 +62,6 @@ public class BookController {
         return "booksshop/bookListByLiteraryGenre";
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping("/genre/{id}")
     public String showBooksByBookGenres(@PathVariable("id") Long id, Model model) {
         BookGenreDto genre = bookGenreService.findById(id);
@@ -75,7 +71,6 @@ public class BookController {
         return "booksshop/bookListByBookGenres";
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping("/brand/{brand}")
     public String showBooksByBrand(@PathVariable String brand, Model model) {
         List<BookShowBrandDto> books = bookService.findByBrand(brand);
@@ -143,13 +138,18 @@ public class BookController {
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/{id}/edit")
     public String update(@ModelAttribute("book") @Valid BookShowDetailsDto book, BindingResult bindingResult,
-                         @PathVariable("id") Long id, Model model) {
+                         @PathVariable Long id, @RequestParam(value = "file", required = false) MultipartFile file,
+                             Model model) throws IOException{
         if (bindingResult.hasErrors()) {
             model.addAttribute("allAuthors", authorService.findAll());
             model.addAttribute("allBookGenres", bookGenreService.findAll());
             model.addAttribute("allLiteraryGenres", literaryGenreService.getLiteraryGenreList());
             System.out.println(bindingResult.getAllErrors());
             return "booksshop/editBook";
+        }
+        if(file != null && !file.isEmpty()) {
+            String fileName = fileService.saveFile(file);
+            book.setImage(fileName);
         }
         bookService.update(id, book);
         return "booksshop/success";
@@ -162,7 +162,14 @@ public class BookController {
         return "booksshop/success";
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    @GetMapping("/search")
+    public String searchBooks(@RequestParam(name="keyword", required = false) String keyword, Model model) {
+        List<BookShowListDto> books = bookService.searchBooks(keyword);
+        model.addAttribute("books", books);
+        model.addAttribute("keyword", keyword);
+        return "booksshop/searchResults";
+    }
+
     @GetMapping("/booksshop")
     public String buttonHome() {
         return "booksshop/home";

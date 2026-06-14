@@ -25,6 +25,8 @@ public interface BookServiceInterface {
 
     List<BookShowListDto> findAvailableFalse();
 
+    List<BookShowListDto> searchBooks(String keyword);
+
     List<BookShowListDto> findAvailableTrue();
 
     void update(long id, BookShowDetailsDto updatedBook);

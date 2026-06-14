@@ -33,7 +33,12 @@ public class OrderController {
 
     @ModelAttribute("order")
     public OrderDetailsDto order() {
-        return new OrderDetailsDto();
+        OrderDetailsDto order = new OrderDetailsDto();
+        order.setBooks(new HashSet<>());
+        order.setCustomer(new OrderCustomerDto());
+        order.setDelivery(new OrderDeliveryDto());
+        order.setPay(new OrderPayDto());
+        return order;
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
@@ -55,10 +60,6 @@ public class OrderController {
 
         BookShowDetailsDto book = bookService.findByBookId(bookId);
 
-        if (order.getBooks() == null) {
-            order.setBooks(new HashSet<>());
-        }
-
         order.getBooks().add(book);
         orderService.addBookToOrder(bookId, order.getId());
 
@@ -68,16 +69,19 @@ public class OrderController {
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping("/customer")
     public String showCustomerForm(@ModelAttribute("order") OrderDetailsDto order) {
-        if (order.getCustomer() == null) {
-            order.setCustomer(new OrderCustomerDto());
+        if(order.getId() == null){
+            return "redirect:/booksshop";
         }
         return "booksshop/form-customer";
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @PostMapping("/customer")
-    public String submitCustomer(@ModelAttribute("order") OrderDetailsDto order,
+    public String submitCustomer(@Valid @ModelAttribute("order") OrderDetailsDto order,
                                  BindingResult bindingResult) {
+        if(order.getId() == null){
+           return "redirect:/booksshop";
+        }
         if (bindingResult.hasErrors()) {
             return "booksshop/form-customer";
         }
@@ -89,15 +93,12 @@ public class OrderController {
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping("/delivery")
     public String delivery(@ModelAttribute("order") OrderDetailsDto order) {
-        if (order.getDelivery() == null) {
-            order.setDelivery(new OrderDeliveryDto());
-        }
         return "booksshop/form-delivery";
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-    @PostMapping()
-    public String delivery(@ModelAttribute("order") OrderDetailsDto orderDto,
+    @PostMapping("/delivery")
+    public String delivery(@Valid@ModelAttribute("order") OrderDetailsDto orderDto,
                            BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
@@ -111,19 +112,15 @@ public class OrderController {
 
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping("/pay")
-    public String pay(@ModelAttribute("order") OrderDetailsDto order, Model model) {
-        if (order.getPay() == null) {
-            order.setPay(new OrderPayDto());
-        }
+    public String pay(@ModelAttribute("order") OrderDetailsDto order) {
+
         return "booksshop/form-pay";
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @PostMapping("/pay")
-    public String pay(@ModelAttribute("order") OrderDetailsDto order,
+    public String pay(@Valid@ModelAttribute("order") OrderDetailsDto order,
                       BindingResult bindingResult) {
-
-        log.info("ORDER ID IN PAY: {}", order.getId());
 
         if (bindingResult.hasErrors()) {
             return "booksshop/form-pay";

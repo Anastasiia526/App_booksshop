@@ -17,7 +17,30 @@
 
         <form th:action="@{/booksshop/{id}/edit(id=${book.id})}"
               method="post"
+              enctype="multipart/form-data"
               th:object="${book}">
+            <input type="hidden" th:field="*{image}"/>
+
+            <div class="mb-3" th:if="${book.image != null}">
+                <label class="form-label">Current Image</label>
+                <div>
+                    <img th:src="@{/images/{filename}(filename=${book.image})}"
+                         class="img-thumbnail"
+                         style="max-height: 200px; object-fit: cover;"
+                         alt="Current book image"/>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Change Book Image</label>
+                <input type="file"
+                       name="file"
+                       class="form-control"
+                       accept="image/*"/>
+                <div class="form-text">
+                    Leave this field empty if you do not want to change the current image.
+                </div>
+            </div>
 
             <div class="mb-3">
                 <label class="form-label">Title</label>

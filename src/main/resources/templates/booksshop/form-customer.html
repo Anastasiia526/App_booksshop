@@ -21,6 +21,7 @@
                 <form th:method="POST"
                       th:action="@{/orders/customer}"
                       th:object="${order}">
+                    <input type="hidden" th:field="*{id}">
 
                     <!-- Books -->
                     <h5 class="mb-3">Your books</h5>

@@ -11,6 +11,7 @@ import app.booksshop.org.example.repositories.BookGenreRepository;
 import app.booksshop.org.example.repositories.BookRepository;
 import app.booksshop.org.example.services.interfaces.BookServiceInterface;
 import app.booksshop.org.example.services.mappers.BookMapper;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,7 +46,7 @@ public class BookServiceImpl implements BookServiceInterface {
 
     @Override
     public BookShowDetailsDto findByBookId(Long id) {
-        return bookMapper.toDto(bookRepository.findById(id).orElseThrow());
+        return bookMapper.toDto(bookRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Book with id " + id + " not found")));
     }
 
     @Override
@@ -79,6 +80,16 @@ public class BookServiceImpl implements BookServiceInterface {
     }
 
     @Override
+    public List<BookShowListDto> searchBooks(String keyword) {
+        if (keyword == null || keyword.isBlank()) {
+            return findAvailableTrue();
+        }
+        return bookRepository.searchBooks(keyword.trim())
+                .stream().map(bookMapper::map)
+                .toList();
+    }
+
+    @Override
     public List<BookShowListDto> findAvailableTrue() {
         return bookMapper.toListDtos(bookRepository.findByAvailableTrue());
     }
@@ -103,7 +114,7 @@ public class BookServiceImpl implements BookServiceInterface {
         book.setPrice(updatedBook.getPrice());
         book.setAvailable(updatedBook.getAvailable());
         book.setDescription(updatedBook.getDescription());
-
+        book.setImage(updatedBook.getImage());
         book.setLiteraryGenre(updatedBook.getLiteraryGenre());
 
         book.getAuthors().clear();

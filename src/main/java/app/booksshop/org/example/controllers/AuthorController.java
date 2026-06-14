@@ -27,7 +27,6 @@ public class AuthorController {
         this.bookService = bookService;
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping("/author/{id}")
     public String showBooksByAuthors(@PathVariable("id")Long id, Model model) {
         AuthorShowDto author = authorService.findById(id);

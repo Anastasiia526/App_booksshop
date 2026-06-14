@@ -33,6 +33,25 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     List<Book> findByAvailableFalse();
 
+    @Query("""
+            SELECT DISTINCT b
+            FROM Book b
+            LEFT JOIN b.authors a
+            LEFT JOIN b.bookGenre bg
+            LEFT JOIN b.literaryGenre lg
+            WHERE LOWER(b.title) LIKE LOWER(CONCAT('%', :keyword, '%'))
+               OR LOWER(b.brand) LIKE LOWER(CONCAT('%', :keyword, '%'))
+               OR LOWER(b.isbn) LIKE LOWER(CONCAT('%', :keyword, '%'))
+               OR LOWER(b.language) LIKE LOWER(CONCAT('%', :keyword, '%'))
+               OR LOWER(b.description) LIKE LOWER(CONCAT('%', :keyword, '%'))
+               OR LOWER(a.fullName) LIKE LOWER(CONCAT('%', :keyword, '%'))
+               OR LOWER(bg.name) LIKE LOWER(CONCAT('%', :keyword, '%'))
+               OR LOWER(lg.name) LIKE LOWER(CONCAT('%', :keyword, '%'))
+               OR CAST(b.productCode AS string) LIKE CONCAT('%', :keyword, '%')
+               OR CAST(b.yearOfPublication AS string) LIKE CONCAT('%', :keyword, '%')
+            """)
+    List<Book> searchBooks(@Param("keyword") String keyword);
+
     List<Book> findByAvailableTrue();
 
     void deleteById(Long id);

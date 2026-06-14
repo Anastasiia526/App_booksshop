@@ -42,8 +42,8 @@ public class Book {
     @Column(name = "year_of_publication")
     private int yearOfPublication;
     private String language;
-    private double price;
-    private Boolean available;
+    private Double price;
+    private boolean available;
 
     @Column(name = "descriptions", columnDefinition = "text")
     private String description;

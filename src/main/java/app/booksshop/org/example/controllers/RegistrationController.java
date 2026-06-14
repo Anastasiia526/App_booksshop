@@ -27,19 +27,18 @@ public class RegistrationController {
         this.userValidator = userValidator;
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping("/login")
     public String loginPage() {
         return "booksshop/auth/login";
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+
     @GetMapping("/registration")
     public String registrationPage(@ModelAttribute("user") User user) {
         return "booksshop/auth/registration";
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+
     @PostMapping("/registration")
     public String performRegistration(@ModelAttribute("user") @Valid User user,
                                       BindingResult bindingResult) {
@@ -51,6 +50,6 @@ public class RegistrationController {
 
         registrationService.register(user);
 
-        return "redirect:/booksshop/auth/login";
+        return "redirect:/auth/login";
     }
 }

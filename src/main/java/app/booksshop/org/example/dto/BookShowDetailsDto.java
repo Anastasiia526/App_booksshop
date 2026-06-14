@@ -1,10 +1,7 @@
 package app.booksshop.org.example.dto;
 
 import app.booksshop.org.example.entities.LiteraryGenre;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,8 +31,11 @@ public class BookShowDetailsDto {
     @Size(min = 1, max = 200)
     private String title;
     private String brand;
+    @Min(1700)
     private int yearOfPublication;
     private String language;
+
+    @Positive
     private double price;
 
     @NotNull

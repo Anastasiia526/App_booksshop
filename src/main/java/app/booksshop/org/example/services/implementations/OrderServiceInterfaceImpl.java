@@ -112,9 +112,9 @@ public class OrderServiceInterfaceImpl implements OrderServiceInterface {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow();
 
-        order.setCardNumber(order.getCardNumber());
-        order.setExpirationDate(order.getExpirationDate());
-        order.setCvv(order.getCvv());
+        order.setCardNumber(dto.getCardNumber());
+        order.setExpirationDate(dto.getExpirationDate());
+        order.setCvv(dto.getCvv());
 
         orderRepository.save(order);
     }
@@ -134,11 +134,13 @@ public class OrderServiceInterfaceImpl implements OrderServiceInterface {
             throw new IllegalStateException("Customer info is incomplete");
         }
 
-        if (order.getAddress() == null) {
+        if (order.getAddress() == null|| order.getAddress().isBlank()) {
             throw new IllegalStateException("Delivery info is missing");
         }
 
-        if (order.getCardNumber() == null) {
+        if (order.getCardNumber() == null||order.getCardNumber().isBlank()
+                ||order.getExpirationDate() == null||order.getExpirationDate().isBlank()
+                ||order.getCvv() == null||order.getCvv().isBlank()) {
             throw new IllegalStateException("Payment info is missing");
         }
 

@@ -26,20 +26,20 @@ public class LiteraryGenreController {
         this.bookGenreService = bookGenreService;
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+
     @GetMapping
     public String startPage() {
         return "/booksshop/startPage";
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+
     @GetMapping("/literaryGenreList")
     public String literaryGenreList(Model model) {
         model.addAttribute("literaryGenres", literaryGenreService.getLiteraryGenreList());
         return "/booksshop/literaryGenreList";
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+
     @GetMapping("literaryGenres/{id}")
     public String listBooksGenresByLiteraryGenre(@PathVariable("id") Long id, Model model) {
         List<BookGenreListDto> bookGenres = bookGenreService.findBookGenresByLiteraryGenreId(id);

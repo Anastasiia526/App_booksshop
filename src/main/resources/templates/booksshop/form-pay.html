@@ -20,7 +20,7 @@
 
                 <form th:method="POST"
                       th:action="@{/orders/pay}"
-                      th:object="${order.pay}">
+                      th:object="${order}">
 
                     <h5 class="mb-3">Your books</h5>
                     <ul class="list-group mb-4">
@@ -34,38 +34,32 @@
                     <h5 class="mb-3">Pay information</h5>
                     <div class="mb-3">
                         <label class="form-label">Card Number</label>
-                        <input type="text"
-                               th:field="*{cardNumber}"
-                               class="form-control"
-                               placeholder="1234 5678 9012 3456"/>
-                        <div class="text-danger"
-                             th:if="${#fields.hasErrors('cardNumber')}"
-                             th:errors="*{cardNumber}">
+                        <label>
+                            <input type="text" th:field="*{pay.cardNumber}" class="form-control"/>
+                        </label>
+                        <div th:if="${#fields.hasErrors('pay.cardNumber')}"
+                             th:errors="*{pay.cardNumber}">
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Expiration Date</label>
-                            <input type="text"
-                                   th:field="*{expirationDate}"
-                                   class="form-control"
-                                   placeholder="MM/YY"/>
-                            <div class="text-danger"
-                                 th:if="${#fields.hasErrors('expirationDate')}"
-                                 th:errors="*{expirationDate}">
+                            <label>
+                                <input type="text" th:field="*{pay.expirationDate}" class="form-control"/>
+                            </label>
+                            <div th:if="${#fields.hasErrors('pay.expirationDate')}"
+                                 th:errors="*{pay.expirationDate}">
                             </div>
                         </div>
 
                         <div class="col-md-6 mb-3">
                             <label class="form-label">CVV</label>
-                            <input type="text"
-                                   th:field="*{cvv}"
-                                   class="form-control"
-                                   placeholder="123"/>
-                            <div class="text-danger"
-                                 th:if="${#fields.hasErrors('cvv')}"
-                                 th:errors="*{cvv}">
+                            <label>
+                                <input type="text" th:field="*{pay.cvv}" class="form-control"/>
+                            </label>
+                            <div th:if="${#fields.hasErrors('pay.cvv')}"
+                                 th:errors="*{pay.cvv}">
                             </div>
                         </div>
                     </div>

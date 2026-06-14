@@ -1,24 +1,29 @@
 package app.booksshop.org.example.config;
 
-import app.booksshop.org.example.services.implementations.UserServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @Configuration
-//@EnableMethodSecurity
-public class AppBooksShopConfig {
+@EnableMethodSecurity
+public class AppBooksShopConfig implements WebMvcConfigurer {
 
-    private final UserServiceImpl userService;
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        Path uploadDir = Paths.get("uploads");
+        String uploadPath = uploadDir.toFile().getAbsolutePath();
 
-
-    @Autowired
-    public AppBooksShopConfig(UserServiceImpl userService) {
-        this.userService = userService;
+        registry.addResourceHandler("/images/**")
+                .addResourceLocations("file:" + uploadPath + "/",
+                        "classpath:/static/images/");
     }
 
     @Bean
@@ -36,7 +41,8 @@ public class AppBooksShopConfig {
                         .requestMatchers("/admin/**").hasRole("ADMIN")
 
                         // публічні сторінки (включаючи весь магазин)
-                        .requestMatchers("/auth/**",
+                        .requestMatchers(
+                                "/auth/**",
                                 "/booksshop/**",
                                 "/images/**",
                                 "/css/**",

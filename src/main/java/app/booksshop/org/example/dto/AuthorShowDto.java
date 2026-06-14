@@ -1,6 +1,5 @@
 package app.booksshop.org.example.dto;
 
-import app.booksshop.org.example.entities.Book;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
